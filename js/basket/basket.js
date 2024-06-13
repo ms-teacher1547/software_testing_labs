@@ -63,3 +63,12 @@ export function serializeBasketItemsToJson(basketItems) {
     }
     return items;
 }
+
+// basket.js
+// export function serializeBasketItemsToJson(basketItems) {
+//     return basketItems.map(item => ({
+//         event: { ...item.event },
+//         ticketCount: item.ticketCount,
+//     }));
+// }
+

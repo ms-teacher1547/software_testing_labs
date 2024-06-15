@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { calculatePercentageDiscount } from "../../js/promotions/promotions";
+import { calculatePercentageDiscount, calculateMoneyOff } from "../../js/promotions/promotions";
 
 describe("Testing calculatePercentageDiscount", () =>{
     it("Shoud apply the percentage discount when cuurent price is equal to minimum spend", () =>{
@@ -62,8 +62,90 @@ describe("Testing calculatePercentageDiscount", () =>{
         const percenetage = - 10;
         const minimumSpend = 50;
         const currentPrice = 60;
-        const result = calculatePercentageDiscount(percenetage, minimumSpend, currentPrice);
 
         expect(() => calculatePercentageDiscount(percenetage, minimumSpend, currentPrice)).toThrow("Percentage cannot be negative");
     });
+
+    it("Should handle the percentage greater than 100 gracefully", () =>{
+        const percenetage = 110;
+        const minimumSpend = 50;
+        const currentPrice = 60;
+    
+        expect(() => calculatePercentageDiscount(percenetage, minimumSpend, currentPrice)).toThrow("Percentage cannot be greater than 100")
+    
+    });   
 })
+
+describe("Testing calculateMoneyOff function", () => {
+    it("Should apply the discount when current price is equal to minimum spend", () => {
+        const discount = 10;
+        const minimumSpend = 60;
+        const currentPrice = 60;
+
+        const resultatAttendu = 50; // 60 - 10 = 50
+        const result = calculateMoneyOff(discount, minimumSpend, currentPrice);
+
+        expect(result).toBe(resultatAttendu);
+    });
+
+    it("Should apply discount when current price is greater than minimum spend", () => {
+        const discount = 10;
+        const minimumSpend = 50;
+        const currentPrice = 70;
+        const resultatAttendu = 60; // 70 - 10 = 60
+        const result = calculateMoneyOff(discount, minimumSpend, currentPrice);
+
+        expect(result).toBe(resultatAttendu);
+    });
+
+    it("Should not apply the discount when current price is less than minimum spend", () => {
+        const discount = 10;
+        const minimumSpend = 50;
+        const currentPrice = 40;
+        const resultatAttendu = 40; // Not applied because 50 > 40
+        const result = calculateMoneyOff(discount, minimumSpend, currentPrice);
+
+        expect(result).toBe(resultatAttendu);
+    });
+
+    it("Should handle discount greater than current price", () => {
+        const discount = 70;
+        const minimumSpend = 50;
+        const currentPrice = 60;
+        const resultatAttendu = -10; // 60 - 70;
+        const result = calculateMoneyOff(discount, minimumSpend, currentPrice);
+
+        expect(result).toBe(resultatAttendu);
+    });
+
+    it("Should return the same price when discount is zero", () => {
+        const discount = 0;
+        const minimumSpend = 50;
+        const currentPrice = 60;
+        const resultatAttendu = 60; // 60 - 0 = 60
+        const result = calculateMoneyOff(discount, minimumSpend, currentPrice);
+
+        expect(result).toBe(resultatAttendu);
+    });
+
+    it("Should handle zero current price", () => {
+        const discount = 10;
+        const minimumSpend = 50;
+        const currentPrice = 0;
+        const resultatAttendu = 0; // No discount applied
+        const result = calculateMoneyOff(discount, minimumSpend, currentPrice);
+
+        expect(result).toBe(resultatAttendu);
+    });
+
+    it("Should handle zero minimum spend", () => {
+        const discount = 10;
+        const minimumSpend = 0;
+        const  currentPrice = 60;
+        const resultatAttendu = 50; // 60 - 10 = 50
+        const result = calculateMoneyOff(discount, minimumSpend, currentPrice);
+
+        expect(result).toBe(resultatAttendu);
+    });
+
+});

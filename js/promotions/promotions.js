@@ -29,15 +29,19 @@ export function generateReferralCode(userId) {
 }
 
 export async function applyDiscount(discountCode, currentTotal) {
-    const { data } = await getDiscount(discountCode);
+    try{
+        const { data } = await getDiscount(discountCode);
 
-    if (data.isValid) {
-        switch (data.type) {
-            case "MONEYOFF":
-                return calculateMoneyOff(data.value, data.minSpend, currentTotal);
-            case "PERCENTAGEOFF":
-                return calculatePercentageDiscount(data.value, data.minSpend, currentTotal);
+        if (data.isValid) {
+            switch (data.type) {
+                case "MONEYOFF":
+                    return calculateMoneyOff(data.value, data.minSpend, currentTotal);
+                case "PERCENTAGEOFF":
+                    return calculatePercentageDiscount(data.value, data.minSpend, currentTotal);
+            }
         }
+    } catch(error) {
+        console.error("Failed to apply discount:", error);
     }
     return currentTotal;
 }

@@ -1,7 +1,12 @@
+<<<<<<< HEAD
 import { describe, expect, it, vi} from "vitest";
 import { calculatePercentageDiscount, calculateMoneyOff, generateReferralCode, applyDiscount} from "../../js/promotions/promotions";
 import { getDiscount } from "../../js/promotions/discount/discount";
 import axios from "axios";
+=======
+import { describe, expect, it } from "vitest";
+import { calculatePercentageDiscount, calculateMoneyOff } from "../../js/promotions/promotions";
+>>>>>>> d1c0fedb94894b456e995971a213ca07b1399671
 
 describe("Testing calculatePercentageDiscount", () =>{
     it("Shoud apply the percentage discount when cuurent price is equal to minimum spend", () =>{
@@ -149,6 +154,7 @@ describe("Testing calculateMoneyOff function", () => {
         expect(result).toBe(resultatAttendu);
     });
 
+<<<<<<< HEAD
 });
 
 describe("Testing generateReferralCode function", () => {
@@ -276,4 +282,6 @@ describe("Testing applyDiscount function", () => {
 
         expect(result).toBe(resultatAttendu);
     });
+=======
+>>>>>>> d1c0fedb94894b456e995971a213ca07b1399671
 });

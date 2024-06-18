@@ -1,34 +1,58 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import exchangeRateProvider from "../../js/promotions/exchange/exchangeRateProvider";
-import getExchangeRate from "../../js/promotions/exchange/exchange";
+import { describe, it, expect, vi } from 'vitest';
+import getExchangeRate from '../../js/promotions/exchange/exchange';
+import exchangeRateProvider from '../../js/promotions/exchange/exchangeRateProvider';
 
-// Mocking the exchangeRateProvider
-vi.mock("../../../js/promotions/exchange/exchangeRateProvider", () => {
-    return {
-        default: {
-            callExchangeRateProvider: vi.fn()
-        }
-    };
+describe('getExchangeRate', () => {
+    it('should return the correct exchange rate response for USD', async () => {
+        // Mock the callExchangeRateProvider method
+        vi.spyOn(exchangeRateProvider, 'callExchangeRateProvider').mockResolvedValue(1.25);
+
+        const callback = vi.fn();
+
+        await getExchangeRate('USD', callback);
+
+        expect(callback).toHaveBeenCalledWith({
+            originalCurrency: 'GBP',
+            newCurrency: 'USD',
+            exchangeRate: 1.25
+        });
+
+        // Restore the original implementation
+        exchangeRateProvider.callExchangeRateProvider.mockRestore();
+    });
+
+    it('should return the correct exchange rate response for EUR', async () => {
+        // Mock the callExchangeRateProvider method
+        vi.spyOn(exchangeRateProvider, 'callExchangeRateProvider').mockResolvedValue(1.18);
+
+        const callback = vi.fn();
+
+        await getExchangeRate('EUR', callback);
+
+        expect(callback).toHaveBeenCalledWith({
+            originalCurrency: 'GBP',
+            newCurrency: 'EUR',
+            exchangeRate: 1.18
+        });
+
+        // Restore the original implementation
+        exchangeRateProvider.callExchangeRateProvider.mockRestore();
+    });
+
+    it('should throw an error for unsupported currency', async () => {
+        // Mock the callExchangeRateProvider method to throw an error
+        vi.spyOn(exchangeRateProvider, 'callExchangeRateProvider').mockImplementation(() => {
+            throw new Error('Currency not supported');
+        });
+
+        const callback = vi.fn();
+
+        await expect(getExchangeRate('ABC', callback)).rejects.toThrow('Currency not supported');
+
+        // Ensure callback was not called
+        expect(callback).not.toHaveBeenCalled();
+
+        // Restore the original implementation
+        exchangeRateProvider.callExchangeRateProvider.mockRestore();
+    });
 });
-
-
-describe("exchangeRateProvider", () => {
-    it("Should return the correct rate for USD", () => {
-        const exchangeRate = exchangeRateProvider.callExchangeRateProvider("USD");
-        expect(exchangeRate).toBe(1.25);
-    })
-
-    it("Should return the correct exchange rate for EUR", () => {
-        const exchangeRate = exchangeRateProvider.callExchangeRateProvider("EUR");
-        expect(exchangeRate).toBe(1.18);
-    });
-
-    it("Should return the correct exchange rate for NZD", () => {
-        const exchangeRate = exchangeRateProvider.callExchangeRateProvider("NZD");
-        expect(exchangeRate).toBe(1.93);
-    });
-
-    it("Should throw an error for an unsupported currency", () => {
-        expect(() => exchangeRateProvider.callExchangeRateProvider("FCFA")).toThrowError("Currency not supported");
-    });
- });

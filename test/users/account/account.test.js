@@ -1,6 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
 import { Purchase, isValidUserName, createAccount, getPastPurchases } from "../../../js/users/account/account";
-import { InvalidUsernameError } from "../../../js/error-handling/exceptions";
 //import purchaseHistory from "../../../js/users/account/purchaseHistory/__mocks__/purchaseHistory";
 import * as users from "../../../js/users/users";
 import * as purchaseHistoty from '../../../js/users/account/purchaseHistory/purchaseHistory';
@@ -73,10 +72,6 @@ describe("Testing createAccount function", () => {
         await expect(createAccount(username)).rejects.toBe('User already exists');
     });
 
-    // it('should throw an error for an invalid username', async () => {
-    //     const username = 'invalidusername';
-    //     await expect(createAccount(username)).rejects.toThrow(InvalidUsernameError);
-    // });
 });
 
 describe('Testing getPastPurchases function', () => {

@@ -1,6 +1,7 @@
 import { vi } from 'vitest';
 const purchaseHistory = vi.mock('../purchaseHistory');
 
+// ajout de export 
 export function __getPurchaseHistory() {
     const response = {
         readyState: 4,

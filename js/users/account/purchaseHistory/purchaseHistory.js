@@ -1,6 +1,8 @@
 import { Purchase } from '../account';
+// Utilisation de la bibliotheque axios a la place de 'XHMLHttpRequest' pour effectuer des requetes HTTP, car elle fonctionne bien dans les environnement node
 import axios from 'axios';
 
+// Definition de 'BASE_URL' pour la fonction 'getPurchseHistory'.
 const BASE_URL = "https://example.com";
 
 export async function getPurchaseHistory(userId) {

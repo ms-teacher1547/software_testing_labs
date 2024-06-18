@@ -1,13 +1,18 @@
 import { Purchase } from '../account';
+import axios from 'axios';
 
-export function getPurchaseHistory(userId) {
-    const url = new URL("/account/orders/history ", BASE_URL);
+const BASE_URL = "https://example.com";
+
+export async function getPurchaseHistory(userId) {
+    const url = new URL("/account/orders/history", BASE_URL);
     url.searchParams.append("userId", userId);
 
-    const request = new XMLHttpRequest()
-    request.open("GET", url.toString())
-
-    return request
+    try {
+        const response = await axios.get(url.toString());
+        return response.data;
+    } catch (error) {
+        throw new Error('Failed to fetch purchase history');
+    }
 }
 
 export function parsePurchaseResponse(purchaseData) {

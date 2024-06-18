@@ -1,4 +1,7 @@
 import exception from '../../error-handling/exceptions';
+import * as users from '../users';
+import { InvalidEventNameError } from '../../error-handling/exceptions';
+import * as purchaseHistory from '../account/purchaseHistory/purchaseHistory';
 
 export class Purchase {
     constructor(eventName, tickets, cost) {
